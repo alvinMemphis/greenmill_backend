@@ -13,6 +13,9 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
+    # green user api / person
+    path('api/person/', include('person.urls', namespace='person')),
+
     # superuser admin access
     path('admin/', admin.site.urls),
 ]
