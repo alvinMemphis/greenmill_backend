@@ -5,6 +5,30 @@ from django.forms import TextInput, Textarea, CharField
 from django import forms
 from django.db import models
 
+'''
+
+A fix to: 
+    Can't delete users if using token blacklist app
+
+'''
+from rest_framework_simplejwt.token_blacklist import models
+from rest_framework_simplejwt.token_blacklist.admin import OutstandingTokenAdmin
+
+class NewOutstandingTokenAdmin(OutstandingTokenAdmin):
+
+    def has_delete_permission(self, *args, **kwargs):
+        return True # default is False in the blacklist admin
+
+admin.site.unregister(models.OutstandingToken)
+admin.site.register(models.OutstandingToken, NewOutstandingTokenAdmin)
+'''
+ 
+ End of fix:
+
+'''
+
+
+
 
 class UserAdminConfig(UserAdmin):
     model = GreenUser

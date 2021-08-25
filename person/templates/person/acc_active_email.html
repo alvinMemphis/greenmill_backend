@@ -38,6 +38,9 @@
         <div style="background-color:whitesmoke; border: solid;">
             <h3 class="">Hi {{ username }},</h3>
             <p class="m-3">Please verify that your email address is {{ user }}, and that you entered it when signing up for Green Mile</p>
+            <p>http://{{current_site}}{{relative_link}}?token={{token}}</p>
+            <a style="text-decoration: none;" href=""><button type="button" class="button button1">Verify Email</button></a>            
+
             <footer style="margin-top: 20px;">
                 <p>Happy Working,</p>
                 <p>The Green Mile team</p>

@@ -10,7 +10,7 @@ class RegisterGreenUserSerializer(serializers.ModelSerializer):
         model = GreenUser
         fields = ('email', 'user_name', 'password')
         extra_fields = {'password': {'write_only': True}}
-
+ 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
@@ -18,6 +18,14 @@ class RegisterGreenUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+
+class EmailVerifyGreenUserSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(max_length=555)
+
+    class Meta:
+        model = GreenUser
+        fields = ['token']
 
 
 class LoginGreenUserSerializer(serializers.ModelSerializer):
@@ -46,8 +54,8 @@ class LoginGreenUserSerializer(serializers.ModelSerializer):
         get_user = GreenUser.objects.filter(email=email)
         user = auth.authenticate(password=password, username=email)
 
-        # if  get_user.exists():
-        #     raise AuthenticationFailed('Green user with this email address already exists.')
+        if  get_user.exists() and get_user[0].is_verified != True:
+            raise AuthenticationFailed('Verify your account to proceed.')
 
         if not user:
             raise AuthenticationFailed('Invalid credentials, try again')
@@ -80,3 +88,5 @@ class LogoutGreenUserSerializer(serializers.Serializer):
         except TokenError:
             # get error from error message dic
             self.fail('bad_token')
+
+
