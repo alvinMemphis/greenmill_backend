@@ -34,7 +34,17 @@ class CustomAccountManager(BaseUserManager):
         return user
 
 
+
+
+
 class GreenUser(AbstractBaseUser, PermissionsMixin):
+    USER_TYPE_CHOICES = (
+     ('admin', 'admin'),
+     ('loader', 'loader'),
+     ('supplier', 'supplier'),
+     ('manager', 'manager'),
+    )
+
     email = models.EmailField(_('email address'), unique=True)
     user_name = models.CharField(max_length=150, unique=True)
     # first_name = models.CharField(max_length=150, blank=True)
@@ -44,6 +54,7 @@ class GreenUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
+    user_type = models.CharField(max_length=40,choices=USER_TYPE_CHOICES, default='admin')
 
     objects = CustomAccountManager()
 
@@ -59,3 +70,4 @@ class GreenUser(AbstractBaseUser, PermissionsMixin):
             'refresh': str(refresh),
             'access': str(refresh.access_token)
         }
+

@@ -33,6 +33,12 @@ urlpatterns = [
     # green user api / person
     path('api/person/', include('person.urls', namespace='person')),
 
+    # green supplier api
+    path('api/supplier/', include('supplier.urls', namespace='supplier')),
+    
+    # green admin api
+    path('api/greenadmin/', include('greenadmin.urls', namespace='greenadmin')),
+
     # api documentation
     path('docs/', include_docs_urls(title='Green Mile API')),
     path('', schema_view.with_ui('swagger',

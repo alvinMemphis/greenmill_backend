@@ -40,6 +40,7 @@ class UserAdminConfig(UserAdmin):
                     'is_active', 'is_staff')
 
     fieldsets = ()
+    # exclude = ['username']
     # fieldsets = (
     #     (None, {'fields': ('email', 'user_name',)}),
     #     ('Permissions', {'fields': ('is_staff', 'is_active')}),
@@ -48,12 +49,12 @@ class UserAdminConfig(UserAdmin):
     # formfield_overrides = {
     #     models.TextField: {'widget': Textarea(attrs={'rows': 20, 'cols': 60})},
     # }
-    # add_fieldsets = (
-    #     (None, {
-    #         'classes': ('wide',),
-    #         'fields': ('email', 'user_name', 'password1', 'password2', 'is_active', 'is_staff')}
-    #      ),
-    # )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'user_name', 'password1', 'password2', 'is_active', 'is_staff', 'is_verified', 'user_type')}
+         ),
+    )
 
 
 admin.site.register(GreenUser, UserAdminConfig)
