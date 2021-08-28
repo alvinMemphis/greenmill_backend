@@ -2,6 +2,7 @@ from rest_framework import serializers, fields
 from .models import GreenUser
 from supplier.models import Supplier
 from hubmanager.models import HubManager
+from loader.models import HubLoader
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
@@ -61,6 +62,15 @@ class RegisterGreenUserSerializer(serializers.ModelSerializer):
             # print(current)
             # r = serializers.CurrentUserDefault()
             usert = HubManager(user=instance, admin=current)
+            usert.save()
+
+        if user_type == 'loader':
+            request = self.context.get("request").user
+            # print(request)
+            current = HubManager.objects.get(user=request)
+            # print(current)
+            # r = serializers.CurrentUserDefault()
+            usert = HubLoader(user=instance, manager=current)
             usert.save()
         return instance
 
