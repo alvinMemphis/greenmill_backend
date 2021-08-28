@@ -14,11 +14,9 @@ from django.template.loader import render_to_string
 import jwt
 from django.conf import settings
 # Create your views here.
-from .serializers import LogicHubSerializer, AssignHubMangerSerializer
 
 
-
-class GreenAdminCreateSupplier(generics.GenericAPIView):
+class GreenAdminCreateManager(generics.GenericAPIView):
 
     serializer_class = RegisterGreenUserSerializer
     permission_class = (IsAuthenticated,)
@@ -78,24 +76,4 @@ class GreenAdminCreateSupplier(generics.GenericAPIView):
         return Response(user_data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LogicHubCreate(generics.GenericAPIView):
-    serializer_class = LogicHubSerializer
-    permission_class = [IsAuthenticated]
 
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED) 
-
-
-
-class UpdateLogicHub(generics.GenericAPIView):
-    serializer_class = AssignHubMangerSerializer
-    permission_class = [IsAuthenticated]
-
-
-    def patch(self, request):
-        serializer = self.serializer_class(data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)

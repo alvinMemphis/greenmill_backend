@@ -39,6 +39,9 @@ urlpatterns = [
     # green admin api
     path('api/greenadmin/', include('greenadmin.urls', namespace='greenadmin')),
 
+    # green admin api
+    path('api/hubmanager/', include('hubmanager.urls', namespace='greenmanager')),
+    
     # api documentation
     path('docs/', include_docs_urls(title='Green Mile API')),
     path('', schema_view.with_ui('swagger',

@@ -1,6 +1,7 @@
 from rest_framework import serializers, fields
 from .models import GreenUser
 from supplier.models import Supplier
+from hubmanager.models import HubManager
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
@@ -36,22 +37,30 @@ class RegisterGreenUserSerializer(serializers.ModelSerializer):
             default_pass = GreenUser.objects.make_random_password()
             # instance.set_password(default_pass)
             instance.set_password(str(default_pass))
-            print(user_type)
-            print(default_pass)
+            # print(user_type)
+            # print(default_pass)
         instance.save()
 
         # user type reg
         usert = None
-        user_type = validated_data.pop('user_type', None)
+        print(user_type)
         if user_type == 'admin':
             usert = GreenAdmin(user=instance)
             usert.save()
         if user_type == 'supplier':
             request = self.context.get("request").user
             current = GreenAdmin.objects.get(user=request)
-            print(current)
+            # print(current)
             # r = serializers.CurrentUserDefault()
             usert = Supplier(person=instance, admin=current)
+            usert.save()
+        if user_type == 'manager':
+            request = self.context.get("request").user
+            # print(request)
+            current = GreenAdmin.objects.get(user=request)
+            # print(current)
+            # r = serializers.CurrentUserDefault()
+            usert = HubManager(user=instance, admin=current)
             usert.save()
         return instance
 
@@ -204,6 +213,5 @@ class SetNewPasswordSerializer(serializers.Serializer):
             return (user)
         except Exception as e:
             raise AuthenticationFailed('The reset link is invalid', 401)
-        return super().validate(attrs)
 
         
