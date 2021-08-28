@@ -19,6 +19,18 @@ class PackageSerializer(serializers.ModelSerializer):
     def validate_supplier(self, value):
         return self.context['request'].user
 
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop('orderstat')
+        # Unless the application properly enforces that this field is
+        # always set, the following could raise a `DoesNotExist`, which
+        # would need to be handled.
+        
+        instance.orderstat = profile_data
+        instance.save()
+        return instance
+
+
+
 
 
 
