@@ -1,11 +1,13 @@
 from django.db import models
-from person.models import GreenUser
-# from hubmanager.models import HubManager as q
 
 
 # Create your models here.
 class GreenAdmin(models.Model):
-    user = models.OneToOneField(GreenUser, on_delete=models.CASCADE, related_name='user_admin')
+    user = models.OneToOneField('person.GreenUser', on_delete=models.CASCADE, related_name='user_admin', default=1)
+
+    def __str__(self) -> str:
+        return self.user.email
+
 
 # class LogicHub(models.Model):
 #     hubname = models.CharField(max_length=100)

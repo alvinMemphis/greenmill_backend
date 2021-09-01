@@ -1,8 +1,7 @@
 from rest_framework import serializers, fields
 from greenadmin.models import GreenAdmin
 from hubmanager.models import LogicHub, HubManager
- 
- 
+
 
 class LogicHubSerializer(serializers.ModelSerializer):
     hubowner = serializers.PrimaryKeyRelatedField(
@@ -37,7 +36,7 @@ class AssignHubMangerSerializer(serializers.Serializer):
         queryset=GreenAdmin.objects.all(),
         required=False, 
         allow_null=True, 
-        default=None
+        default=serializers.CurrentUserDefault()
     )
 
     hubmanager = serializers.PrimaryKeyRelatedField(

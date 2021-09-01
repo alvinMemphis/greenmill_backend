@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from rest_framework_simplejwt.tokens import RefreshToken
+from greenadmin.models import GreenAdmin
 
 
 class CustomAccountManager(BaseUserManager):
@@ -30,11 +31,11 @@ class CustomAccountManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, user_name=user_name, **other_fields)
         user.set_password(password)
+        user.is_verified = False
         user.save()
+        greenA = GreenAdmin.objects.create(user=user)
+        greenA.save()
         return user
-
-
-
 
 
 class GreenUser(AbstractBaseUser, PermissionsMixin):

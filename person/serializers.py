@@ -1,7 +1,7 @@
 from rest_framework import serializers, fields
 from .models import GreenUser
 from supplier.models import Supplier
-from hubmanager.models import HubManager
+from hubmanager.models import HubManager, LogicHub
 from loader.models import HubLoader
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
@@ -19,9 +19,17 @@ class RegisterGreenUserSerializer(serializers.ModelSerializer):
         write_only=True,
         required=False,
     )
+
+    hub = serializers.PrimaryKeyRelatedField(
+        queryset=LogicHub.objects.all(),
+        required=False, 
+        allow_null=True, 
+        default=None
+    )
+    
     class Meta:
         model = GreenUser
-        fields = ('email', 'user_name', 'password', 'user_type')
+        fields = ('email', 'user_name', 'password', 'user_type','hub')
         # extra_fields = {'password': {'write_only': True}}
 
 
@@ -31,6 +39,8 @@ class RegisterGreenUserSerializer(serializers.ModelSerializer):
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
         user_type = validated_data.pop('user_type', None)
+        hub = validated_data.pop('hub', None)
+
         if password is not None and user_type in ['admin']:
             instance.set_password(password)
 
@@ -39,7 +49,7 @@ class RegisterGreenUserSerializer(serializers.ModelSerializer):
             # instance.set_password(default_pass)
             instance.set_password(str(default_pass))
             # print(user_type)
-            # print(default_pass)
+            print(default_pass)
         instance.save()
 
         # user type reg
@@ -70,7 +80,7 @@ class RegisterGreenUserSerializer(serializers.ModelSerializer):
             current = HubManager.objects.get(user=request)
             # print(current)
             # r = serializers.CurrentUserDefault()
-            usert = HubLoader(user=instance, manager=current)
+            usert = HubLoader(user=instance, manager=current, his_hub=hub)
             usert.save()
         return instance
 

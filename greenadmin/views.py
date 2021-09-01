@@ -3,7 +3,7 @@ from person.serializers import RegisterGreenUserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, BasePermission, IsAdminUser 
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
@@ -80,7 +80,7 @@ class GreenAdminCreateSupplier(generics.GenericAPIView):
 
 class LogicHubCreate(generics.GenericAPIView):
     serializer_class = LogicHubSerializer
-    permission_class = [IsAuthenticated]
+    permission_class = [IsAuthenticated, IsAdminUser]
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data, context={'request': request})
@@ -92,7 +92,7 @@ class LogicHubCreate(generics.GenericAPIView):
 
 class UpdateLogicHub(generics.GenericAPIView):
     serializer_class = AssignHubMangerSerializer
-    permission_class = [IsAuthenticated]
+    permission_class = [IsAuthenticated, IsAdminUser]
 
 
     def patch(self, request):

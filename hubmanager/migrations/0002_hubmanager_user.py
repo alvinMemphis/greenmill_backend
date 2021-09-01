@@ -10,14 +10,14 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('greenadmin', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('hubmanager', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='greenadmin',
+            model_name='hubmanager',
             name='user',
-            field=models.OneToOneField(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='user_admin', to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='greenusers', to=settings.AUTH_USER_MODEL),
         ),
     ]

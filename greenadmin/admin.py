@@ -5,3 +5,5 @@ from hubmanager.models import LogicHub
 # Register your models here.
 admin.site.register(GreenAdmin)
 admin.site.register(LogicHub)
+
+
