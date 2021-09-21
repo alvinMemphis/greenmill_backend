@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-
+from person.AuthToken import MyTokenObtainPairView
 schema_view = get_schema_view(
     openapi.Info(
         title="Green Mile API",
@@ -27,8 +27,8 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # access and refresh token
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', MyTokenObtainPairView.as_view(), name='token_refresh'),
 
     # green user api / person
     path('api/person/', include('person.urls', namespace='person')),

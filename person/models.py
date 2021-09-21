@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from rest_framework_simplejwt.tokens import RefreshToken
 from greenadmin.models import GreenAdmin
-
+from django.utils.timezone import now
 
 class CustomAccountManager(BaseUserManager):
 
@@ -28,8 +28,9 @@ class CustomAccountManager(BaseUserManager):
         if not email:
             raise ValueError(_('You must provide an email address'))
 
+        date_joined = now()
         email = self.normalize_email(email)
-        user = self.model(email=email, user_name=user_name, **other_fields)
+        user = self.model(email=email, user_name=user_name, date_joined=date_joined,**other_fields)
         user.set_password(password)
         user.is_verified = False
         user.save()
@@ -56,6 +57,7 @@ class GreenUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
     user_type = models.CharField(max_length=40,choices=USER_TYPE_CHOICES, default='admin')
+    date_joined = models.DateField(auto_now_add=True)
 
     objects = CustomAccountManager()
 
