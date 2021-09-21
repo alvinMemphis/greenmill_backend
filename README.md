@@ -11,6 +11,12 @@ Additional description about the project and its features.
 
 ## Getting Started
 
+
+## RUN IT ON YOUR SIDE UHHH
+create a .env file and place
+- E_H_P=ur_gmail_app_password
+- E_H_U=urmail@gmail.com
+
 **This is an example of how you may set up your project locally.**
 
 To get a local copy up and running follow these simple example steps.
